@@ -1,0 +1,49 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+env/
+
+# Build artifacts (PyInstaller)
+build/
+dist/
+*.spec
+
+# Installer output
+installer/
+
+# Local data / runtime
+backend/learning.db
+backend/config.json
+server.pid
+*.log
+
+# Certificates / secrets (do NOT commit private keys)
+*.pfx
+ilabolAfk-code-signing.cer
+ilabolAfk-code-signing.pfx
+
+# Test / temporary files
+test_exam.pdf
+test_ocr.png
+check*.py
+check*.txt
+*_out.txt
+e.txt
+s.txt
+s2.txt
+pycheck.txt
+custom_out.txt
+exam_out*.txt
+
+# Generated icon source
+lingua-icon.jpg
+
+# IDE / OS
+.vscode/
+.idea/
+Thumbs.db
+Desktop.ini
+.DS_Storeextract_icons/

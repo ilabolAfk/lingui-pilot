@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LinguaPilot — обучение языкам с ИИ</title>
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="stylesheet" href="static/css/style.css">
+</head>
+<body>
+<div class="app">
+    <header class="topbar">
+        <div class="brand"><span class="logo"><i class="fa-solid fa-graduation-cap"></i></span> Lingua<span>Pilot</span></div>
+        <nav class="tabs">
+            <button class="tab active" data-tab="chat"><i class="fa-solid fa-comments"></i> Диалог</button>
+            <button class="tab" data-tab="cards"><i class="fa-solid fa-layer-group"></i> Карточки</button>
+            <button class="tab" data-tab="stories"><i class="fa-solid fa-book-open"></i> Истории</button>
+            <button class="tab" data-tab="exercises"><i class="fa-solid fa-dumbbell"></i> Практика</button>
+            <button class="tab" data-tab="pronounce"><i class="fa-solid fa-microphone"></i> Произношение</button>
+            <button class="tab" data-tab="exam"><i class="fa-solid fa-file-pen"></i> Экзамен</button>
+        </nav>
+        <select id="langSelect" title="Язык обучения"></select>
+        <select id="modelSelect" title="Нейросеть (модель)"></select>
+    </header>
+
+    <main>
+        <section id="chat" class="view active">
+            <div class="chat-wrap">
+                <div id="chatWindow" class="chat-window"></div>
+                <div class="chat-input">
+                    <input id="chatText" type="text" placeholder="Напишите сообщение на изучаемом языке...">
+                    <button id="chatSend"><i class="fa-solid fa-paper-plane"></i> Отправить</button>
+                </div>
+            </div>
+        </section>
+
+        <section id="cards" class="view">
+            <div class="card-toolbar">
+                <div class="card-learn">
+                    <button id="learnBtn"><i class="fa-solid fa-wand-magic-sparkles"></i> Учить карточки</button>
+                    <span id="dueCount" class="muted"></span>
+                </div>
+                <div class="card-add">
+                    <input id="newWord" placeholder="Слово">
+                    <input id="newTrans" placeholder="Перевод">
+                    <button id="addCardBtn"><i class="fa-solid fa-plus"></i> Добавить</button>
+                </div>
+            </div>
+            <div id="flashcard" class="flashcard hidden">
+                <div id="cardFace" class="card-face"></div>
+                <div class="card-actions hidden" id="cardActions">
+                    <button data-q="1">Снова</button>
+                    <button data-q="3">Затрудняюсь</button>
+                    <button data-q="4">Нормально</button>
+                    <button data-q="5">Легко</button>
+                </div>
+            </div>
+            <ul id="cardList" class="card-list"></ul>
+        </section>
+
+        <section id="stories" class="view">
+            <div class="story-toolbar">
+                <select id="storyLevel">
+                    <option value="beginner">Начинающий</option>
+                    <option value="intermediate">Средний</option>
+                    <option value="advanced">Продвинутый</option>
+                </select>
+                <select id="storyGenre" title="Жанр">
+                    <option value="adventure">Приключения</option>
+                    <option value="fairy">Сказка</option>
+                    <option value="detective">Детектив</option>
+                    <option value="daily">Повседневная жизнь</option>
+                    <option value="science">Фантастика</option>
+                </select>
+                <select id="storyLength" title="Длина">
+                    <option value="short">Короткая</option>
+                    <option value="medium" selected>Средняя</option>
+                    <option value="long">Длинная</option>
+                </select>
+                <input id="storyTheme" placeholder="Тема (по желанию), напр. путешествие">
+                <button id="genStory"><i class="fa-solid fa-wand-magic-sparkles"></i> Сгенерировать историю</button>
+            </div>
+            <div id="storyArea"></div>
+        </section>
+
+        <section id="exercises" class="view">
+            <div class="ex-toolbar">
+                <select id="exLevel">
+                    <option value="beginner">Начинающий</option>
+                    <option value="intermediate">Средний</option>
+                    <option value="advanced">Продвинутый</option>
+                </select>
+                <button id="genExercises"><i class="fa-solid fa-list-check"></i> Сгенерировать упражнения</button>
+            </div>
+            <div id="exerciseArea"></div>
+        </section>
+
+        <section id="pronounce" class="view">
+            <div class="pronounce-box">
+                <label for="phraseText">Произнесите фразу (по-английски):</label>
+                <textarea id="phraseText" rows="2">Hello, how are you today?</textarea>
+                <label class="small">Или скажите вслух:</label>
+                <button id="recordBtn"><i class="fa-solid fa-microphone-lines"></i> Говорить</button>
+                <p id="recogStatus" class="muted"></p>
+                <div id="pronRes"></div>
+            </div>
+        </section>
+
+        <section id="exam" class="view">
+            <div class="exam-setup">
+                <h2 class="exam-title"><i class="fa-solid fa-file-pen"></i> Экзамен</h2>
+                <div class="exam-grid">
+                    <label>Уровень (CEFR)
+                        <select id="examLevel">
+                            <option value="a1">A1 — Начальный</option>
+                            <option value="a2">A2 — Элементарный</option>
+                            <option value="b1" selected>B1 — Средний</option>
+                            <option value="b2">B2 — Выше среднего</option>
+                            <option value="c1">C1 — Продвинутый</option>
+                            <option value="c2">C2 — Профессиональный</option>
+                        </select>
+                    </label>
+                    <label>Вопросов в секции
+                        <select id="examPerType">
+                            <option value="3">3</option>
+                            <option value="4" selected>4</option>
+                            <option value="5">5</option>
+                        </select>
+                    </label>
+                    <fieldset class="exam-types">
+                        <legend>Типы заданий</legend>
+                        <label><input type="checkbox" id="examTypeGrammar" checked> Грамматика + лексика</label>
+                        <label><input type="checkbox" id="examTypeReading"> Чтение (текст + вопросы)</label>
+                        <label><input type="checkbox" id="examTypeCustom"> Вопросы по своему тексту</label>
+                    </fieldset>
+                </div>
+
+                <div class="exam-source">
+                    <label>Свой текст (для «Вопросов по своему тексту»)</label>
+                    <textarea id="examSourceText" rows="4" placeholder="Вставьте текст на изучаемом языке..."></textarea>
+                    <div class="exam-file-row">
+                        <label class="file-label"><i class="fa-solid fa-upload"></i> Загрузить файл (текст / PDF / изображение)
+                            <input type="file" id="examFile" accept=".txt,.pdf,.png,.jpg,.jpeg,.webp,.bmp">
+                        </label>
+                        <label class="ocr-toggle" title="Экспериментально"><input type="checkbox" id="examOcr"> OCR распознавание <span class="beta">бета</span></label>
+                        <button id="examExtractBtn"><i class="fa-solid fa-file-import"></i> Извлечь текст</button>
+                    </div>
+                    <p id="examExtractStatus" class="muted"></p>
+                </div>
+
+                <div class="exam-actions">
+                    <button id="examStart"><i class="fa-solid fa-play"></i> Начать экзамен</button>
+                </div>
+            </div>
+
+            <div id="examRun" class="hidden">
+                <div class="exam-header">
+                    <span id="examTimer"><i class="fa-solid fa-stopwatch"></i> 00:00</span>
+                    <span id="examProgress"></span>
+                    <button id="examFinish"><i class="fa-solid fa-flag-checkered"></i> Завершить</button>
+                </div>
+                <div id="examBody"></div>
+            </div>
+
+            <div id="examResult" class="hidden"></div>
+        </section>
+    </main>
+</div>
+
+<script src="static/js/app.js"></script>
+</body>
+</html>
