@@ -21,7 +21,10 @@ server.pid
 *.log
 
 # Certificates / secrets (do NOT commit private keys)
+# ВАЖНО: .cer тоже скрываем, так как это публичная часть сертификата.
+# Пароль от .pfx всё равно должен храниться в переменных окружения, а не в коде.
 *.pfx
+*.cer
 ilabolAfk-code-signing.cer
 ilabolAfk-code-signing.pfx
 
@@ -38,12 +41,13 @@ pycheck.txt
 custom_out.txt
 exam_out*.txt
 
-# Generated icon source
+# Generated icons / assets
 lingua-icon.jpg
+extract_icons/
 
 # IDE / OS
 .vscode/
 .idea/
 Thumbs.db
 Desktop.ini
-.DS_Storeextract_icons/
+.DS_Store
